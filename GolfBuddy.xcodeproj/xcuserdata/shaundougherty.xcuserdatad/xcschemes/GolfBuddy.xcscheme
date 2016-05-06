@@ -48,6 +48,16 @@
                ReferencedContainer = "container:GolfBuddy.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7233E6011CDB83AE00679832"
+               BuildableName = "DataSiloTests.xctest"
+               BlueprintName = "DataSiloTests"
+               ReferencedContainer = "container:GolfBuddy.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
+    </dependencies>
+    <scenes>
+        <!--gameInterface-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller identifier="gameInterface" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="GolfBuddyWA" customModuleProvider="target">
+                    <items>
+                        <imageView height="53.5" alignment="center" image="GolfBuddyLogo~universal" contentMode="scaleAspectFit" id="Cur-qn-YoM"/>
+                        <button width="1" alignment="left" title="18 Holes" id="IOf-ep-IF9">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.56078431370000004" green="0.90588235289999997" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="fullRoundTapped" destination="AgC-eL-Hgc" id="yeo-HY-k0P"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="9 Holes" id="ynp-tY-tCF">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.56078431370000004" green="0.90588235289999997" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="halfRoundTapped" destination="AgC-eL-Hgc" id="B6T-0O-B9V"/>
+                            </connections>
+                        </button>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="313" y="764"/>
+        </scene>
+        <!--strokeController-->
+        <scene sceneID="OSm-5r-usq">
+            <objects>
+                <controller identifier="strokeController" id="64p-bQ-4rE" customClass="StrokeInterfaceController" customModule="GolfBuddyWA_Extension">
+                    <items>
+                        <button width="1" alignment="center" title="+" id="fGB-jH-vlM">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.56078431370000004" green="0.90588235289999997" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="font" type="system" pointSize="29"/>
+                            <connections>
+                                <action selector="addStrokeTapped" destination="64p-bQ-4rE" id="MMt-go-WlZ"/>
+                            </connections>
+                        </button>
+                        <label width="136" height="25.5" alignment="left" text="n of n" textAlignment="center" id="1EH-wS-eNR"/>
+                        <label width="136" height="32.5" alignment="center" verticalAlignment="center" text="Label" textAlignment="center" id="9yK-PC-ZxQ">
+                            <fontDescription key="font" type="system" weight="semibold" pointSize="23"/>
+                        </label>
+                        <button width="1" alignment="center" verticalAlignment="bottom" title="-" id="LHr-9h-egx">
+                            <color key="backgroundColor" red="0.56078431370000004" green="0.90588235289999997" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="font" type="system" pointSize="29"/>
+                            <connections>
+                                <action selector="subtractStrokeTapped" destination="64p-bQ-4rE" id="5p0-ot-xIK"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <menu key="menu" id="SqC-g4-qis">
+                        <items>
+                            <menuItem title="Next Hole" icon="accept" id="XL7-8I-0v7">
+                                <connections>
+                                    <action selector="nextHoleTapped" destination="64p-bQ-4rE" id="uCD-6t-Lyq"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="addStrokeButton" destination="fGB-jH-vlM" id="Qv8-66-mAe"/>
+                        <outlet property="holeLabel" destination="1EH-wS-eNR" id="Bdj-lU-xYR"/>
+                        <outlet property="strokeLabel" destination="9yK-PC-ZxQ" id="ziZ-Iv-gjQ"/>
+                        <outlet property="subtractStrokeButton" destination="LHr-9h-egx" id="VPT-7U-q7B"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="580" y="764"/>
+        </scene>
+    </scenes>
+</document>
