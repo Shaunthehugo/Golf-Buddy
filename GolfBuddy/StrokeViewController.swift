@@ -16,7 +16,7 @@ class StrokeViewController: UIViewController {
 	var holeNum = 1
 	var stroke = 0
 	var strokes = 0
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy.AppShare")
+    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
 	
 	@IBOutlet weak var addStrokeButton: UIButton!
 	@IBOutlet weak var subtractStrokeButton: UIButton!
@@ -27,10 +27,10 @@ class StrokeViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
-        self.sharedDefaults?.synchronize()
-        
 		navigationItem.backBarButtonItem?.title = "Cancel"
 		navigationItem.title = "Round of \(holes)"
+        
+        self.sharedDefaults?.setInteger(holes, forKey: "holes")
 		
 		self.addStrokeButton.layer.borderColor = UIColor.whiteColor().CGColor
 		self.addStrokeButton.layer.cornerRadius = 50
@@ -47,19 +47,39 @@ class StrokeViewController: UIViewController {
 		holeLabel.text = "\(holeNum) of \(holes)"
 		strokeLabel.text = "0"
 	}
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        self.sharedDefaults?.synchronize()
+        self.sharedDefaults?.setBool(true, forKey: "gameStarted")
+        
+        self.holeNum = self.sharedDefaults!.integerForKey("holeNum")
+        self.holeLabel.text = "\(holeNum)"
+        
+        self.stroke = self.sharedDefaults!.integerForKey("stroke")
+        self.strokeLabel.text = "\(stroke)"
+        
+        self.strokes = self.sharedDefaults!.integerForKey("strokes")
+    }
 	
 	@IBAction func addStrokeTapped(sender: AnyObject) {
 		stroke+=1
 		strokeLabel.text = "\(stroke)"
+        self.sharedDefaults?.setInteger(stroke, forKey: "stroke")
 	}
 	
 	@IBAction func subtractStrokeTapped(sender: AnyObject) {
         stroke-=1
         strokeLabel.text = "\(stroke)"
+        self.sharedDefaults?.setInteger(stroke, forKey: "stroke")
 	}
 	
 	@IBAction func nextHoleTapped(sender: AnyObject) {
-		strokes+=stroke
+		self.sharedDefaults?.setInteger(holes, forKey: "holes")
+        self.sharedDefaults?.setInteger(strokes, forKey: "strokes")
+        
+        strokes+=stroke
         showStrokeType()
         holeNum+=1
         holeLabel.text = "\(holeNum) of \(holes)"
@@ -74,16 +94,16 @@ class StrokeViewController: UIViewController {
 			alertView.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
 			self.presentViewController(alertView, animated: true, completion: nil)
             
-            if self.sharedDefaults?.objectForKey("strokes") == nil {
-                self.sharedDefaults?.setObject(strokes, forKey: "strokes")
+            if self.sharedDefaults?.integerForKey("strokes") == nil {
+                self.sharedDefaults?.setInteger(strokes, forKey: "strokes")
             } else {
-                self.sharedDefaults?.setObject(strokes+(self.sharedDefaults?.objectForKey("strokes") as? Int)!, forKey: "strokes")
+                self.sharedDefaults?.setInteger(strokes+(self.sharedDefaults?.integerForKey("strokes"))!, forKey: "strokes")
             }
             
-            if self.sharedDefaults?.objectForKey("games") == nil {
-                self.sharedDefaults?.setObject(1, forKey: "games")
+            if self.sharedDefaults?.integerForKey("games") == nil {
+                self.sharedDefaults?.setInteger(1, forKey: "games")
             } else {
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("games") as? Int)!, forKey: "games")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.integerForKey("games"))!, forKey: "games")
             }
 		}
         
@@ -96,33 +116,33 @@ class StrokeViewController: UIViewController {
         var birdieAction: UIAlertAction
         var parAction: UIAlertAction
         
-        if self.sharedDefaults?.objectForKey("eagles") == nil {
+        if self.sharedDefaults?.integerForKey("eagles") == nil {
             eagleAction = UIAlertAction(title: "Eagle", style: .Default, handler: { (UIAlertAction) in
-                self.sharedDefaults?.setObject(1, forKey: "eagles")
+                self.sharedDefaults?.setInteger(1, forKey: "eagles")
             })
         } else {
             eagleAction = UIAlertAction(title: "Eagle", style: .Default, handler: { (UIAlertAction) in
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("eagles") as? Int)!, forKey: "eagles")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.integerForKey("eagles"))!, forKey: "eagles")
             })
         }
         
-        if self.sharedDefaults?.objectForKey("birdies") == nil {
+        if self.sharedDefaults?.integerForKey("birdies") == nil {
             birdieAction = UIAlertAction(title: "Birdie", style: .Default, handler: { (UIAlertAction) in
-                self.sharedDefaults?.setObject(1, forKey: "birdies")
+                self.sharedDefaults?.setInteger(1, forKey: "birdies")
             })
         } else {
             birdieAction = UIAlertAction(title: "Birdie", style: .Default, handler: { (UIAlertAction) in
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("birdies") as? Int)!, forKey: "birdies")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.integerForKey("birdies"))!, forKey: "birdies")
             })
         }
         
-        if self.sharedDefaults?.objectForKey("pars") == nil {
+        if self.sharedDefaults?.integerForKey("pars") == nil {
             parAction = UIAlertAction(title: "Par", style: .Default, handler: { (UIAlertAction) in
-                self.sharedDefaults?.setObject(1, forKey: "pars")
+                self.sharedDefaults?.setInteger(1, forKey: "pars")
             })
         } else {
             parAction = UIAlertAction(title: "Par", style: .Default, handler: { (UIAlertAction) in
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("pars") as? Int)!, forKey: "pars")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.integerForKey("pars"))!, forKey: "pars")
             })
         }
         

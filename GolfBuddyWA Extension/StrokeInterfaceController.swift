@@ -17,7 +17,7 @@ class StrokeInterfaceController: WKInterfaceController {
     var holeNum = 1
     var stroke = 0
     var strokes = 0
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy.AppShare")
+    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
     
     @IBOutlet var addStrokeButton: WKInterfaceButton!
     @IBOutlet var subtractStrokeButton: WKInterfaceButton!
@@ -53,15 +53,15 @@ class StrokeInterfaceController: WKInterfaceController {
             showPopUp()
             
             if self.sharedDefaults?.objectForKey("strokes") == nil {
-                self.sharedDefaults?.setObject(strokes, forKey: "strokes")
+                self.sharedDefaults?.setInteger(strokes, forKey: "strokes")
             } else {
-                self.sharedDefaults?.setObject(strokes+(self.sharedDefaults?.objectForKey("strokes") as? Int)!, forKey: "strokes")
+                self.sharedDefaults?.setInteger(strokes+(self.sharedDefaults?.objectForKey("strokes") as? Int)!, forKey: "strokes")
             }
             
             if self.sharedDefaults?.objectForKey("games") == nil {
-                self.sharedDefaults?.setObject(1, forKey: "games")
+                self.sharedDefaults?.setInteger(1, forKey: "games")
             } else {
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("games") as? Int)!, forKey: "games")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("games") as? Int)!, forKey: "games")
             }
             
             self.sharedDefaults?.synchronize()
@@ -83,31 +83,31 @@ class StrokeInterfaceController: WKInterfaceController {
         
         if self.sharedDefaults?.objectForKey("eagles") == nil {
             eagleAction = WKAlertAction(title: "Eagle", style: .Default) { () -> Void in
-                self.sharedDefaults?.setObject(1, forKey: "eagles")
+                self.sharedDefaults?.setInteger(1, forKey: "eagles")
             }
         } else {
             eagleAction = WKAlertAction(title: "Eagle", style: .Default) { () -> Void in
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("eagels") as? Int)!, forKey: "eagles")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("eagels") as? Int)!, forKey: "eagles")
             }
         }
         
         if self.sharedDefaults?.objectForKey("birdies") == nil {
             birdieAction = WKAlertAction(title: "Birdie", style: .Default) { () -> Void in
-                self.sharedDefaults?.setObject(1, forKey: "birdies")
+                self.sharedDefaults?.setInteger(1, forKey: "birdies")
             }
         } else {
             birdieAction = WKAlertAction(title: "Birdie", style: .Default) { () -> Void in
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("birdies") as? Int)!, forKey: "birdies")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("birdies") as? Int)!, forKey: "birdies")
             }
         }
         
         if self.sharedDefaults?.objectForKey("pars") == nil {
             parAction = WKAlertAction(title: "Par", style: .Default) { () -> Void in
-                self.sharedDefaults?.setObject(1, forKey: "pars")
+                self.sharedDefaults?.setInteger(1, forKey: "pars")
             }
         } else {
             parAction = WKAlertAction(title: "Par", style: .Default) { () -> Void in
-                self.sharedDefaults?.setObject(1+(self.sharedDefaults?.objectForKey("pars") as? Int)!, forKey: "pars")
+                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("pars") as? Int)!, forKey: "pars")
             }
         }
         

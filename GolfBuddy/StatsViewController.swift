@@ -23,7 +23,7 @@ class StatsViewController: UIViewController {
     var strokes: Int = 0
     var games: Int = 0
     var average: Int = 0
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy.AppShare")
+    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -38,21 +38,20 @@ class StatsViewController: UIViewController {
 
         self.sharedDefaults!.synchronize()
         
-        if self.sharedDefaults?.objectForKey("strokes") == nil {
+        if self.sharedDefaults?.integerForKey("strokes") == nil {
 			averageLabel.text = "Average: 0"
 		} else {
-            if self.sharedDefaults?.objectForKey("strokes") == nil {
-                self.sharedDefaults?.setObject(0, forKey: "strokes")
+            if self.sharedDefaults?.integerForKey("strokes") == nil {
+                self.sharedDefaults?.setInteger(0, forKey: "strokes")
                 self.strokes = 0
             } else {
-                self.strokes = (self.sharedDefaults!.objectForKey("strokes") as? Int)!
+                self.strokes = self.sharedDefaults!.integerForKey("strokes")
             }
             
-            if self.sharedDefaults!.objectForKey("games") == nil {
-                self.sharedDefaults!.setObject(0, forKey: "games")
+            if self.sharedDefaults!.integerForKey("games") == 0 {
                 self.games = 0
             } else {
-                self.games = (self.sharedDefaults!.objectForKey("games") as? Int)!
+                self.games = self.sharedDefaults!.integerForKey("games")
             }
             
             self.average = strokes/games
@@ -60,25 +59,22 @@ class StatsViewController: UIViewController {
             averageLabel.text = "Average: \(average)"
 		}
         
-        if self.sharedDefaults!.objectForKey("birdies") == nil {
-            self.sharedDefaults!.setObject(0, forKey: "birdies")
+        if self.sharedDefaults!.integerForKey("birdies") == 0 {
             self.birdies = 0
         } else {
-            self.birdies = (self.sharedDefaults!.objectForKey("birdies") as? Int)!
+            self.birdies = self.sharedDefaults!.integerForKey("birdies")
         }
         
-        if self.sharedDefaults!.objectForKey("pars") == nil {
-            self.sharedDefaults!.setObject(0, forKey: "pars")
+        if self.sharedDefaults!.integerForKey("pars") == 0 {
             self.pars = 0
         } else {
-            self.pars = (self.sharedDefaults!.objectForKey("pars") as? Int)!
+            self.pars = self.sharedDefaults!.integerForKey("pars")
         }
         
-        if self.sharedDefaults!.objectForKey("eagles") == nil {
-            self.sharedDefaults!.setObject(0, forKey: "eagles")
+        if self.sharedDefaults!.integerForKey("eagles") == 0 {
             self.eagles = 0
         } else {
-            self.eagles = (self.sharedDefaults!.objectForKey("eagles") as? Int)!
+            self.eagles = self.sharedDefaults!.integerForKey("eagles")
         }
 
         eagleStatLabel.text = "\(self.eagles)"
@@ -92,11 +88,11 @@ class StatsViewController: UIViewController {
 		parStatLabel.text = "0"
 		averageLabel.text = "Average: 0"
         
-        self.sharedDefaults!.setObject(0, forKey: "strokes")
-        self.sharedDefaults!.setObject(0, forKey: "games")
-        self.sharedDefaults!.setObject(0, forKey: "eagles")
-        self.sharedDefaults!.setObject(0, forKey: "birdies")
-        self.sharedDefaults!.setObject(0, forKey: "pars")
+        self.sharedDefaults!.setInteger(0, forKey: "strokes")
+        self.sharedDefaults!.setInteger(0, forKey: "games")
+        self.sharedDefaults!.setInteger(0, forKey: "eagles")
+        self.sharedDefaults!.setInteger(0, forKey: "birdies")
+        self.sharedDefaults!.setInteger(0, forKey: "pars")
 	}
 	
 	override func preferredStatusBarStyle() -> UIStatusBarStyle {

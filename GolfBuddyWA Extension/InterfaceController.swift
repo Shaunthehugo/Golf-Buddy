@@ -10,11 +10,15 @@ import WatchKit
 import Foundation
 
 class InterfaceController: WKInterfaceController {
+    
+    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
 
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
+        
+        self.pushControllerWithName("strokeController", context: self.sharedDefaults!.integerForKey("holeNum"))
     }
 
     override func willActivate() {
