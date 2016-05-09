@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import CoreData
+import WatchConnectivity
 
-class StatsViewController: UIViewController {
+class StatsViewController: UIViewController, WCSessionDelegate {
 	
 	@IBOutlet weak var eagleStatLabel: UILabel!
 	@IBOutlet weak var birdieStatLabel: UILabel!
@@ -23,59 +23,38 @@ class StatsViewController: UIViewController {
     var strokes: Int = 0
     var games: Int = 0
     var average: Int = 0
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
+    var session: WCSession!
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        configureSession()
         
         self.resetButton.layer.borderColor = UIColor.whiteColor().CGColor
         self.resetButton.layer.cornerRadius = 19.5
         self.resetButton.clipsToBounds = true
 	}
 	
+    
+    func configureSession() {
+        if WCSession.isSupported() {
+            session.delegate = self
+            session.activateSession()
+        }
+    }
+    
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(true)
 
-        self.sharedDefaults!.synchronize()
+        configureSession()
         
-        if self.sharedDefaults?.integerForKey("strokes") == nil {
+//        if self.sharedDefaults?.integerForKey("strokes") == 0 {
 			averageLabel.text = "Average: 0"
-		} else {
-            if self.sharedDefaults?.integerForKey("strokes") == nil {
-                self.sharedDefaults?.setInteger(0, forKey: "strokes")
-                self.strokes = 0
-            } else {
-                self.strokes = self.sharedDefaults!.integerForKey("strokes")
-            }
             
-            if self.sharedDefaults!.integerForKey("games") == 0 {
-                self.games = 0
-            } else {
-                self.games = self.sharedDefaults!.integerForKey("games")
-            }
-            
-            self.average = strokes/games
+            self.average = self.strokes/self.games
             
             averageLabel.text = "Average: \(average)"
-		}
-        
-        if self.sharedDefaults!.integerForKey("birdies") == 0 {
-            self.birdies = 0
-        } else {
-            self.birdies = self.sharedDefaults!.integerForKey("birdies")
-        }
-        
-        if self.sharedDefaults!.integerForKey("pars") == 0 {
-            self.pars = 0
-        } else {
-            self.pars = self.sharedDefaults!.integerForKey("pars")
-        }
-        
-        if self.sharedDefaults!.integerForKey("eagles") == 0 {
-            self.eagles = 0
-        } else {
-            self.eagles = self.sharedDefaults!.integerForKey("eagles")
-        }
+//		}
 
         eagleStatLabel.text = "\(self.eagles)"
         birdieStatLabel.text = "\(self.birdies)"
@@ -87,12 +66,6 @@ class StatsViewController: UIViewController {
 		birdieStatLabel.text = "0"
 		parStatLabel.text = "0"
 		averageLabel.text = "Average: 0"
-        
-        self.sharedDefaults!.setInteger(0, forKey: "strokes")
-        self.sharedDefaults!.setInteger(0, forKey: "games")
-        self.sharedDefaults!.setInteger(0, forKey: "eagles")
-        self.sharedDefaults!.setInteger(0, forKey: "birdies")
-        self.sharedDefaults!.setInteger(0, forKey: "pars")
 	}
 	
 	override func preferredStatusBarStyle() -> UIStatusBarStyle {

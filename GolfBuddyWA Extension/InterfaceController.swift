@@ -8,19 +8,26 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
-
+    var session: WCSession!
+    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
-        
-        self.pushControllerWithName("strokeController", context: self.sharedDefaults!.integerForKey("holeNum"))
+        configureSession()
     }
 
+    func configureSession() {
+        if WCSession.isSupported() {
+            session.delegate = self
+            session.activateSession()
+        }
+    }
+    
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()

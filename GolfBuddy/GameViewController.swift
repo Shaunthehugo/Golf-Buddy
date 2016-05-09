@@ -7,19 +7,22 @@
 //
 
 import UIKit
+import WatchConnectivity
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, WCSessionDelegate {
 	
+    var session: WCSession!
+    
 	@IBOutlet weak var fullRoundButton: UIButton!
 	@IBOutlet weak var halfRoundButton: UIButton!
 	
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		
-		self.fullRoundButton.layer.borderColor = UIColor.whiteColor().CGColor
+		configureSession()
+        
+        self.fullRoundButton.layer.borderColor = UIColor.whiteColor().CGColor
 		self.fullRoundButton.layer.cornerRadius = 17.5
 		self.fullRoundButton.clipsToBounds = true
 		
@@ -31,9 +34,13 @@ class GameViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        if self.sharedDefaults?.boolForKey("gameStarted") == true {
+        configureSession()
+    }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
+        if (message["gameStarted"] as? Bool) == true {
             let strokeVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("strokeVC") as! StrokeViewController
-            strokeVC.holes = self.sharedDefaults!.integerForKey("holeNum")
+            strokeVC.holes = (message["holes"] as? Int)!
             self.navigationController?.pushViewController(strokeVC, animated: true)
         }
     }
@@ -53,5 +60,12 @@ class GameViewController: UIViewController {
 	override func preferredStatusBarStyle() -> UIStatusBarStyle {
 		return UIStatusBarStyle.LightContent
 	}
+    
+    func configureSession() {
+        if WCSession.isSupported() {
+            session.delegate = self
+            session.activateSession()
+        }
+    }
 }
 

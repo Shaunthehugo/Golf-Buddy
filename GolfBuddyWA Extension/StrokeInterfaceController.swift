@@ -8,16 +8,16 @@
 
 import WatchKit
 import Foundation
-import CoreData
+import WatchConnectivity
 
-class StrokeInterfaceController: WKInterfaceController {
+class StrokeInterfaceController: WKInterfaceController, WCSessionDelegate {
     
     var holes = 0
     var games = 0
     var holeNum = 1
     var stroke = 0
     var strokes = 0
-    var sharedDefaults = NSUserDefaults(suiteName: "group.com.foru.GolfBuddy")
+    var session: WCSession!
     
     @IBOutlet var addStrokeButton: WKInterfaceButton!
     @IBOutlet var subtractStrokeButton: WKInterfaceButton!
@@ -29,8 +29,16 @@ class StrokeInterfaceController: WKInterfaceController {
         
         holes = (context as? Int)!
         
+        configureSession()
+        
         holeLabel.setText("\(holeNum) of \(holes)")
-        strokeLabel.setText("0")
+    }
+    
+    func configureSession() {
+        if WCSession.isSupported() {
+            session.delegate = self
+            session.activateSession()
+        }
     }
     
     @IBAction func addStrokeTapped() {
@@ -51,28 +59,12 @@ class StrokeInterfaceController: WKInterfaceController {
             subtractStrokeButton.setEnabled(false)
             
             showPopUp()
-            
-            if self.sharedDefaults?.objectForKey("strokes") == nil {
-                self.sharedDefaults?.setInteger(strokes, forKey: "strokes")
-            } else {
-                self.sharedDefaults?.setInteger(strokes+(self.sharedDefaults?.objectForKey("strokes") as? Int)!, forKey: "strokes")
-            }
-            
-            if self.sharedDefaults?.objectForKey("games") == nil {
-                self.sharedDefaults?.setInteger(1, forKey: "games")
-            } else {
-                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("games") as? Int)!, forKey: "games")
-            }
-            
-            self.sharedDefaults?.synchronize()
         }
         
         holeNum+=1
         holeLabel.setText("\(holeNum) of \(holes)")
         strokeLabel.setText("0")
         stroke = 0
-        
-        self.sharedDefaults?.synchronize()
     }
     
     func showStrokeType() {
@@ -81,35 +73,15 @@ class StrokeInterfaceController: WKInterfaceController {
         var parAction: WKAlertAction
         let h0 = {print()}
         
-        if self.sharedDefaults?.objectForKey("eagles") == nil {
             eagleAction = WKAlertAction(title: "Eagle", style: .Default) { () -> Void in
-                self.sharedDefaults?.setInteger(1, forKey: "eagles")
+                
             }
-        } else {
-            eagleAction = WKAlertAction(title: "Eagle", style: .Default) { () -> Void in
-                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("eagels") as? Int)!, forKey: "eagles")
-            }
-        }
         
-        if self.sharedDefaults?.objectForKey("birdies") == nil {
             birdieAction = WKAlertAction(title: "Birdie", style: .Default) { () -> Void in
-                self.sharedDefaults?.setInteger(1, forKey: "birdies")
             }
-        } else {
-            birdieAction = WKAlertAction(title: "Birdie", style: .Default) { () -> Void in
-                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("birdies") as? Int)!, forKey: "birdies")
-            }
-        }
         
-        if self.sharedDefaults?.objectForKey("pars") == nil {
             parAction = WKAlertAction(title: "Par", style: .Default) { () -> Void in
-                self.sharedDefaults?.setInteger(1, forKey: "pars")
             }
-        } else {
-            parAction = WKAlertAction(title: "Par", style: .Default) { () -> Void in
-                self.sharedDefaults?.setInteger(1+(self.sharedDefaults?.objectForKey("pars") as? Int)!, forKey: "pars")
-            }
-        }
         
         let noneAction = WKAlertAction(title: "None", style: .Default, handler: h0)
         
